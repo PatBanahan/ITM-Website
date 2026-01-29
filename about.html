@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITM - About</title>
+    <style>
+        @font-face {
+            font-family: 'Early Quake';
+            src: url('./assets/fonts/Early Quake DEMO.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            cursor: url('./assets/images/paper-plane-cursor-white.png'), auto;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Early Quake', sans-serif;
+            font-size: 64px;
+            letter-spacing: 12px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 2;
+            margin-bottom: 40px;
+        }
+
+        .about-text p {
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            font-family: 'Early Quake', sans-serif;
+            padding: 20px 60px;
+            font-size: 28px;
+            letter-spacing: 6px;
+            background: transparent;
+            color: #fff;
+            border: 3px solid #fff;
+            cursor: url('./assets/images/paper-plane-cursor-white.png'), pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            margin: 40px auto 0;
+            width: fit-content;
+        }
+
+        .back-btn:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
+            cursor: url('./assets/images/paper-plane-cursor-black.png'), pointer;
+        }
+
+        /* VHS effects */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 1000;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
+            animation: noise 0.2s infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        /* Film grain overlay */
+        .film-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.08;
+            z-index: 999;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grainFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grainFilter)' /%3E%3C/svg%3E");
+            animation: grain 0.15s steps(5) infinite;
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-2%, -2%); }
+            20% { transform: translate(2%, -1%); }
+            30% { transform: translate(-1%, 2%); }
+            40% { transform: translate(1%, 1%); }
+            50% { transform: translate(-2%, 1%); }
+            60% { transform: translate(2%, -2%); }
+            70% { transform: translate(-1%, -1%); }
+            80% { transform: translate(1%, 2%); }
+            90% { transform: translate(2%, 1%); }
+        }
+
+        /* Film scratches/dust */
+        .film-scratches {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            z-index: 998;
+            pointer-events: none;
+            background: 
+                linear-gradient(90deg, transparent 98%, rgba(255,255,255,0.05) 98%, rgba(255,255,255,0.05) 99%, transparent 99%),
+                linear-gradient(90deg, transparent 23%, rgba(255,255,255,0.03) 23%, rgba(255,255,255,0.03) 23.5%, transparent 23.5%),
+                linear-gradient(90deg, transparent 67%, rgba(255,255,255,0.04) 67%, rgba(255,255,255,0.04) 67.5%, transparent 67.5%);
+            animation: scratches 8s linear infinite;
+        }
+
+        @keyframes scratches {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+
+        /* Subtle vignette */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.4) 100%);
+            z-index: 997;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+    <div class="film-grain"></div>
+    <div class="film-scratches"></div>
+    
+    <div class="container">
+        <h1>ABOUT ITM</h1>
+        
+        <div class="about-text">
+            <p>ITM started in 2019 when Jace Jelani and AJ Krash linked up over a shared obsession with rap music and the culture around it. Jace came from a family of producers, AJ had a knack for turning real-life chaos into sound, and neither of them wanted to just make another group that drops songs and disappears. They wanted to build something that actually mattered.</p>
+
+            <p>The moment they knew ITM was real? They snuck into a mansion party, played their music, and watched hundreds of college kids lose their minds. That night made it clear — this wasn't just for them anymore.</p>
+
+            <p>If you had to sum up ITM in one line: it's music that makes you forget where you are and forces you into the present. No trends, no recycled sounds, no chasing what's already popping — just raw, honest work you can't get anywhere else. The whole idea is to remind people that the moment they're in right now is the only one that matters. Whether you're a student, working a 9-to-5, or just trying to figure life out, that mindset applies to everyone.</p>
+
+            <p>In the studio, it's chaos. Every session is different — emotional, dark, wild, beautiful. Both Jace and AJ pull straight from lived experiences, and everything comes together in real time. No formula, no routine.</p>
+
+            <p>For 2026, the mission is simple: keep the promise to the fans. Drop great music, videos, and merch consistently, all while spreading the sound through shows, streaming, interviews, and whatever else comes next.</p>
+
+            <p>This is for the kids who were told they'd never be enough. The problem children, the burnouts, the outsiders. The ones who don't fit the mold and don't care to. ITM sits at the intersection where skate culture meets rap — raw energy, creativity without rules, and a refusal to play it safe.</p>
+        </div>
+
+        <a href="main-menu.html" class="back-btn">BACK</a>
+    </div>
+</body>
+</html>

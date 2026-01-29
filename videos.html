@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITM - Videos</title>
+    <style>
+        @font-face {
+            font-family: 'Early Quake';
+            src: url('assets/fonts/Early Quake DEMO.otf') format('opentype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: url('assets/images/paper-plane-cursor-white.png') 21 21, auto;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Early Quake', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 120px 20px 60px 20px;
+        }
+
+        /* VHS Scan Lines */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.03),
+                rgba(255, 255, 255, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* VHS Noise */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+            animation: noise 0.2s infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.08; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 12px 24px;
+            font-family: 'Early Quake', monospace;
+            font-size: 24px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-button img {
+            transition: filter 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #fff;
+            color: #000;
+            cursor: url('assets/images/paper-plane-cursor-black.png') 21 21, pointer;
+            transform: scale(1.05);
+        }
+
+        .back-button:hover img {
+            filter: invert(1);
+        }
+
+        h1 {
+            font-family: 'Early Quake', sans-serif;
+            font-size: 48px;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            font-weight: normal;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin: 0 auto;
+        }
+
+        .video-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 3px solid #fff;
+            box-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.3),
+                0 0 40px rgba(255, 0, 0, 0.2),
+                0 0 60px rgba(0, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .video-item:hover {
+            box-shadow: 
+                0 0 30px rgba(255, 255, 255, 0.5),
+                0 0 60px rgba(255, 0, 0, 0.4),
+                0 0 90px rgba(0, 255, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .video-item iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            margin-top: 15px;
+            font-size: 18px;
+            line-height: 1.4;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .video-title {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .video-artist {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .videos-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+
+            h1 {
+                font-size: 40px;
+                margin-bottom: 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 100px 15px 40px 15px;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-bottom: 40px;
+                letter-spacing: 8px;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 18px;
+            }
+
+            .video-info {
+                font-size: 16px;
+            }
+
+            .video-title {
+                font-size: 18px;
+            }
+
+            .video-artist {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="main-menu.html" class="back-button">
+        <img src="assets/images/arrow.png" alt="Back" style="width: 47px; height: 47px; position: relative; top: 0px; left: -2px;">
+        <span>BACK</span>
+    </a>
+
+    <div class="container">
+        <h1>Videos</h1>
+
+        <div class="videos-grid">
+            <!-- Same Friends -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/cpFSlkowA-0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Same Friends</div>
+                    <div class="video-artist">AJ Krash x Graystrr x Jace Jelani</div>
+                </div>
+            </div>
+
+            <!-- After Us -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/urhgfZREnfE" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">After Us</div>
+                    <div class="video-artist">AJ Krash</div>
+                </div>
+            </div>
+
+            <!-- A Cure for Wellness -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/EDFpsZjV0nw" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">A Cure for Wellness</div>
+                    <div class="video-artist">AJ Krash ft. Jace Jelani</div>
+                </div>
+            </div>
+
+            <!-- Better Me -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/sl9JkoQTSjk" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Better Me</div>
+                    <div class="video-artist">Jace Jelani</div>
+                </div>
+            </div>
+
+            <!-- PizzaDraft2 -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/AfkkaYU1zEI" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">PizzaDraft<span style="font-family: 'CooperFiveOpti Black', 'Cooper Black', serif; font-weight: bold; font-size: 105%; position: relative; top: -1px;">2</span></div>
+                    <div class="video-artist">AJ Krash x Jace Jelani x Graystrr</div>
+                </div>
+            </div>
+
+            <!-- Nose Up -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/D0Ry4B6LnXs" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Nose Up</div>
+                    <div class="video-artist">AJ Krash x Jace Jelani</div>
+                </div>
+            </div>
+
+            <!-- Open Eyes -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/KPU3OD1gInE" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Open Eyes</div>
+                    <div class="video-artist">AJ Krash</div>
+                </div>
+            </div>
+
+            <!-- Forever Again -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/IccY4IlIlpE" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Forever Again</div>
+                    <div class="video-artist">Jace Jelani</div>
+                </div>
+            </div>
+
+            <!-- Love Is War -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/ECCAFQ12hMo" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Love Is War</div>
+                    <div class="video-artist">AJ Krash</div>
+                </div>
+            </div>
+
+            <!-- Midwest Freestyle -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/-BX-IFk2Cco" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Midwest Freestyle</div>
+                    <div class="video-artist">AJ Krash</div>
+                </div>
+            </div>
+
+            <!-- go2war -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/VeISIftLVYs" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">go<span style="font-family: 'CooperFiveOpti Black', 'Cooper Black', serif; font-weight: bold; font-size: 99%; position: relative; top: -1px;">2</span>war</div>
+                    <div class="video-artist">Jace Jelani</div>
+                </div>
+            </div>
+
+            <!-- REARVIEW -->
+            <div>
+                <div class="video-item">
+                    <iframe src="https://www.youtube.com/embed/tX5mZ60PNNc" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">REARVIEW</div>
+                    <div class="video-artist">AJ Krash</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

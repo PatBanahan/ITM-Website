@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITM - In The Moment</title>
+    <link rel="preload" href="main-menu.html" as="document">
+    <style>
+        @font-face {
+            font-family: 'Early Quake';
+            src: url('./assets/fonts/Early Quake DEMO.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            cursor: url('./assets/images/paper-plane-cursor-white.png'), auto;
+        }
+
+        #cursor {
+            display: none;
+        }
+
+        #scene-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #background-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            object-fit: cover;
+            opacity: 1;
+            pointer-events: none;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 10 !important;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        h1 {
+            font-family: 'Early Quake', sans-serif;
+            font-size: 72px;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            font-weight: normal;
+        }
+
+        .tagline {
+            display: none;
+        }
+
+        .enter-btn {
+            font-family: 'Early Quake', sans-serif;
+            padding: 25px 80px;
+            font-size: 36px;
+            letter-spacing: 8px;
+            background: transparent;
+            color: #fff;
+            border: 3px solid #fff;
+            cursor: url('./assets/images/paper-plane-cursor-white.png'), pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-weight: normal;
+        }
+        
+        .enter-btn:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            cursor: url('./assets/images/paper-plane-cursor-black.png'), pointer;
+        }
+
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .enter-btn:hover::before {
+            left: 100%;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 3;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 3;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
+            animation: noise 0.2s infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+        }
+
+        /* Glitch animations */
+        @keyframes glitch-button {
+            0%, 100% { 
+                transform: translate(0);
+                filter: none;
+            }
+            10% { 
+                transform: translate(-8px, 8px) scale(1.02);
+                filter: hue-rotate(90deg) brightness(1.3);
+            }
+            20% { 
+                transform: translate(8px, -8px) scale(0.98);
+                filter: hue-rotate(180deg) brightness(0.7);
+            }
+            30% { 
+                transform: translate(-6px, -6px) scale(1.03);
+                filter: hue-rotate(270deg) brightness(1.5);
+            }
+            40% { 
+                transform: translate(6px, 6px) scale(0.97);
+                filter: hue-rotate(360deg) brightness(0.8);
+            }
+            50% { 
+                transform: translate(-10px, 4px) scale(1.01);
+                filter: hue-rotate(45deg) brightness(1.2);
+            }
+            60% { 
+                transform: translate(10px, -4px) scale(0.99);
+                filter: hue-rotate(135deg) brightness(0.9);
+            }
+            70% { 
+                transform: translate(-4px, 10px) scale(1.02);
+                filter: hue-rotate(225deg) brightness(1.1);
+            }
+            80% { 
+                transform: translate(4px, -10px) scale(0.98);
+                filter: hue-rotate(315deg) brightness(1.3);
+            }
+            90% { 
+                transform: translate(-7px, 7px) scale(1.01);
+                filter: hue-rotate(180deg) brightness(0.8);
+            }
+        }
+
+        @keyframes rgb-split-box {
+            0% { 
+                box-shadow: 0 0 0 rgba(255,0,0,0), 0 0 0 rgba(0,0,255,0);
+            }
+            15% { 
+                box-shadow: -8px 0 0 rgba(255,0,0,1), 8px 0 0 rgba(0,0,255,1);
+            }
+            30% { 
+                box-shadow: 8px 0 0 rgba(255,0,0,1), -8px 0 0 rgba(0,255,0,1);
+            }
+            45% { 
+                box-shadow: -6px 6px 0 rgba(0,255,0,1), 6px -6px 0 rgba(0,0,255,1);
+            }
+            60% { 
+                box-shadow: 6px -6px 0 rgba(255,0,0,1), -6px 6px 0 rgba(0,0,255,1);
+            }
+            75% { 
+                box-shadow: -10px 0 0 rgba(0,255,0,1), 10px 0 0 rgba(255,0,0,1);
+            }
+            90% { 
+                box-shadow: 5px 5px 0 rgba(0,0,255,1), -5px -5px 0 rgba(255,0,0,1);
+            }
+            100% { 
+                box-shadow: 0 0 0 rgba(255,0,0,0), 0 0 0 rgba(0,0,255,0);
+            }
+        }
+
+        @keyframes title-rgb-flicker {
+            0%, 100% { 
+                text-shadow: 0 0 0 red, 0 0 0 blue;
+                opacity: 1;
+            }
+            5% { 
+                text-shadow: -5px 0 0 red, 5px 0 0 cyan;
+                opacity: 0.8;
+            }
+            10% { 
+                text-shadow: 5px 0 0 red, -5px 0 0 blue;
+                opacity: 1;
+            }
+            15% { 
+                text-shadow: -3px 3px 0 cyan, 3px -3px 0 magenta;
+                opacity: 0.6;
+            }
+            20% { 
+                text-shadow: 0 0 0 red, 0 0 0 blue;
+                opacity: 1;
+            }
+            25% { 
+                text-shadow: -7px 0 0 magenta, 7px 0 0 cyan;
+                opacity: 0.9;
+            }
+            30% { 
+                text-shadow: 4px -4px 0 red, -4px 4px 0 blue;
+                opacity: 0.7;
+            }
+            35% { 
+                text-shadow: 0 0 0 red, 0 0 0 blue;
+                opacity: 1;
+            }
+            40% { 
+                text-shadow: -6px 0 0 cyan, 6px 0 0 red;
+                opacity: 0.85;
+            }
+            50% { 
+                text-shadow: 0 0 0 red, 0 0 0 blue;
+                opacity: 1;
+            }
+            60% { 
+                text-shadow: -4px 4px 0 magenta, 4px -4px 0 cyan;
+                opacity: 0.75;
+            }
+            70% { 
+                text-shadow: 8px 0 0 red, -8px 0 0 blue;
+                opacity: 0.9;
+            }
+            80% { 
+                text-shadow: 0 0 0 red, 0 0 0 blue;
+                opacity: 1;
+            }
+            90% { 
+                text-shadow: -5px 0 0 cyan, 5px 0 0 magenta;
+                opacity: 0.8;
+            }
+        }
+
+        .glitching-title {
+            animation: title-rgb-flicker 1.2s ease-in-out;
+        }
+
+        @keyframes rgb-split {
+            0% { 
+                text-shadow: 0 0 0 red, 0 0 0 blue;
+                transform: translate(0);
+            }
+            33% { 
+                text-shadow: -3px 0 0 red, 3px 0 0 blue;
+                transform: translate(3px, -3px);
+            }
+            66% { 
+                text-shadow: 3px 0 0 red, -3px 0 0 blue;
+                transform: translate(-3px, 3px);
+            }
+            100% { 
+                text-shadow: 0 0 0 red, 0 0 0 blue;
+                transform: translate(0);
+            }
+        }
+
+        @keyframes screen-glitch {
+            0%, 100% { 
+                opacity: 1;
+                transform: translate(0) scale(1);
+            }
+            10% { 
+                opacity: 0.8;
+                transform: translate(-10px, 0) scale(1.01);
+            }
+            20% { 
+                opacity: 1;
+                transform: translate(10px, 0) scale(0.99);
+            }
+            30% { 
+                opacity: 0.9;
+                transform: translate(-5px, 5px) scale(1.02);
+            }
+            40% { 
+                opacity: 1;
+                transform: translate(5px, -5px) scale(0.98);
+            }
+            50% { 
+                opacity: 0.85;
+                transform: translate(0, 10px) scale(1.01);
+            }
+            60% { 
+                opacity: 1;
+                transform: translate(0, -10px) scale(0.99);
+            }
+            70% { 
+                opacity: 0.95;
+                transform: translate(-8px, 0) scale(1);
+            }
+            80% { 
+                opacity: 1;
+                transform: translate(8px, 0) scale(1);
+            }
+            90% { 
+                opacity: 0.9;
+                transform: translate(0, 0) scale(1.03);
+            }
+        }
+
+        .glitching-button {
+            animation: glitch-button 1.2s ease-in-out, rgb-split 1.2s ease-in-out, rgb-split-box 1.2s ease-in-out;
+        }
+
+        .glitching-screen {
+            animation: screen-glitch 0.6s ease-in-out;
+        }
+
+        #glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        #glitch-overlay.active {
+            display: block;
+            animation: vhs-glitch 0.6s ease-in-out;
+        }
+
+        @keyframes vhs-glitch {
+            0% {
+                background: transparent;
+            }
+            10% {
+                background: 
+                    linear-gradient(90deg, rgba(255,0,0,0.3) 0%, transparent 10%, rgba(0,255,0,0.3) 20%, transparent 30%, rgba(0,0,255,0.3) 40%, transparent 50%);
+                transform: translateX(-100px);
+            }
+            20% {
+                background: 
+                    repeating-linear-gradient(
+                        0deg,
+                        rgba(255, 255, 255, 0.1) 0px,
+                        transparent 2px,
+                        rgba(0, 0, 0, 0.2) 4px,
+                        transparent 6px
+                    );
+                transform: translateX(100px);
+            }
+            30% {
+                background: rgba(255, 255, 255, 0.9);
+                transform: translateX(0);
+            }
+            35% {
+                background: rgba(0, 0, 0, 0.9);
+            }
+            40% {
+                background: 
+                    repeating-linear-gradient(
+                        90deg,
+                        rgba(255, 0, 0, 0.2) 0px,
+                        rgba(0, 255, 0, 0.2) 3px,
+                        rgba(0, 0, 255, 0.2) 6px
+                    );
+                transform: translateY(-50px);
+            }
+            50% {
+                background: rgba(255, 255, 255, 0.8);
+                transform: translateY(50px);
+            }
+            60% {
+                background: 
+                    repeating-linear-gradient(
+                        180deg,
+                        transparent 0px,
+                        rgba(255, 255, 255, 0.1) 1px,
+                        transparent 2px
+                    );
+                transform: scale(1.05);
+            }
+            70% {
+                background: rgba(0, 0, 0, 0.7);
+                transform: scale(0.95);
+            }
+            80% {
+                background: 
+                    linear-gradient(0deg, rgba(255,0,0,0.5) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,255,0.5) 100%);
+                transform: translateX(-50px);
+            }
+            90% {
+                background: rgba(255, 255, 255, 0.95);
+                transform: scale(1.1);
+            }
+            100% {
+                background: transparent;
+                transform: scale(1);
+            }
+        }
+
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            letter-spacing: 4px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <video id="background-video" autoplay loop muted playsinline>
+        <source src="./assets/videos/montage.mp4" type="video/mp4">
+    </video>
+    
+    <div id="cursor"></div>
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+    <div id="glitch-overlay"></div>
+    
+    <div id="scene-container"></div>
+    
+    <div id="loading">LOADING...</div>
+    
+    <div class="content" style="display: none;" id="content">
+        <h1>IN THE MOMENT</h1>
+        <p class="tagline">Music • Videos • Art</p>
+        <button class="enter-btn" onclick="enterSite()">ENTER</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        const container = document.getElementById('scene-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0); // Transparent background
+        container.appendChild(renderer.domElement);
+
+        camera.position.set(0, 0, 5); // Eye level, centered
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+
+        const spotLight = new THREE.SpotLight(0xffffff, 1.5);
+        spotLight.position.set(5, 10, 5);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        const rimLight = new THREE.DirectionalLight(0x00ffff, 0.5);
+        rimLight.position.set(-5, 0, -5);
+        scene.add(rimLight);
+
+        const accentLight = new THREE.PointLight(0xff00ff, 0.3);
+        accentLight.position.set(0, -5, 5);
+        scene.add(accentLight);
+
+        let logo;
+        const loader = new THREE.GLTFLoader();
+        
+        console.log('Loading logo from local file...');
+        
+        // Load from same directory
+        loader.load(
+            './ITM_Logo_3D.glb',
+            function(gltf) {
+                console.log('Logo loaded successfully!');
+                logo = gltf.scene;
+                
+                const box = new THREE.Box3().setFromObject(logo);
+                const center = box.getCenter(new THREE.Vector3());
+                logo.position.sub(center);
+                
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 3.6 / maxDim; // 90% of 4 = 3.6
+                logo.scale.multiplyScalar(scale);
+                
+                logo.traverse((child) => {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshStandardMaterial({
+                            color: 0xffffff,
+                            metalness: 0.3,
+                            roughness: 0.4,
+                            emissive: 0xffffff,
+                            emissiveIntensity: 0.1
+                        });
+                        child.castShadow = true;
+                    }
+                });
+                
+                scene.add(logo);
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'flex';
+                
+                console.log('Logo loaded and content displayed!');
+            },
+            function(xhr) {
+                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+            },
+            function(error) {
+                console.error('Error loading logo:', error);
+                document.getElementById('loading').innerText = 'ERROR - See console';
+            }
+        );
+        
+        // Fallback: Show content after 5 seconds even if logo doesn't load
+        setTimeout(() => {
+            if (document.getElementById('loading').style.display !== 'none') {
+                console.log('Timeout: Showing content anyway');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'flex';
+            }
+        }, 5000);
+        
+        // Force video to play
+        const bgVideo = document.getElementById('background-video');
+        if (bgVideo) {
+            bgVideo.play().catch(e => console.log('Video autoplay blocked:', e));
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (logo) {
+                const speed = logo.userData.glitchSpeed || 0.01;
+                logo.rotation.y += speed;
+            }
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        let isTransitioning = false;
+        let logoSpinInterval = null;
+
+        function enterSite() {
+            const button = document.querySelector('.enter-btn');
+            const title = document.querySelector('h1');
+            const overlay = document.getElementById('glitch-overlay');
+            const content = document.querySelector('.content');
+            
+            // Prevent multiple clicks
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            // Step 1: Button glitches (0-300ms)
+            button.classList.add('glitching-button');
+            
+            // Step 1.5: Title glitches (0-600ms)
+            if (title) {
+                title.classList.add('glitching-title');
+            }
+            
+            // Step 2: Logo spins MUCH faster (300-1200ms) - CONSTANT SPEED
+            setTimeout(() => {
+                if (logo) {
+                    // Clear any existing interval
+                    if (logoSpinInterval) clearInterval(logoSpinInterval);
+                    
+                    // Spin at constant high speed until transition completes
+                    logoSpinInterval = setInterval(() => {
+                        logo.rotation.y += 0.15; // Super fast, constant speed
+                    }, 16); // ~60fps
+                }
+            }, 300);
+            
+            // Step 3: Full screen glitch (600-1200ms)
+            setTimeout(() => {
+                content.classList.add('glitching-screen');
+                overlay.classList.add('active');
+            }, 600);
+            
+            // Step 4: Hard cut to main menu (1200ms)
+            setTimeout(() => {
+                if (logoSpinInterval) clearInterval(logoSpinInterval);
+                window.location.href = 'main-menu.html';
+            }, 1200);
+        }
+
+        // Reset state when page loads (fixes back button)
+        window.addEventListener('load', () => {
+            isTransitioning = false;
+            if (logoSpinInterval) clearInterval(logoSpinInterval);
+            
+            // Remove any stuck classes
+            const button = document.querySelector('.enter-btn');
+            const title = document.querySelector('h1');
+            const overlay = document.getElementById('glitch-overlay');
+            const content = document.querySelector('.content');
+            
+            if (button) button.classList.remove('glitching-button');
+            if (title) title.classList.remove('glitching-title');
+            if (overlay) overlay.classList.remove('active');
+            if (content) content.classList.remove('glitching-screen');
+        });
+        
+        // Also reset when navigating back
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                isTransitioning = false;
+                if (logoSpinInterval) clearInterval(logoSpinInterval);
+                
+                const button = document.querySelector('.enter-btn');
+                const title = document.querySelector('h1');
+                const overlay = document.getElementById('glitch-overlay');
+                const content = document.querySelector('.content');
+                
+                if (button) button.classList.remove('glitching-button');
+                if (title) title.classList.remove('glitching-title');
+                if (overlay) overlay.classList.remove('active');
+                if (content) content.classList.remove('glitching-screen');
+            }
+        });
+    </script>
+</body>
+</html>
