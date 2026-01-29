@@ -218,6 +218,47 @@
             cursor: url('assets/images/paper-plane-cursor-black.png') 21 21, pointer;
         }
 
+        /* Form Input Styling */
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        input[type="email"],
+        input[type="text"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            border: 2px solid white;
+            background: black;
+            color: white;
+            font-family: 'Early Quake', monospace;
+            font-size: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 500px;
+            height: 150px;
+            padding: 12px;
+            border: 2px solid white;
+            background: black;
+            color: white;
+            font-family: 'Early Quake', monospace;
+            font-size: 16px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0ff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             body {
