@@ -90,127 +90,13 @@
         }
 
         /* VHS effects */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: 1000;
-            animation: scan 8s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(10px); }
-        }
-
-        .noise {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.03;
-            z-index: 1000;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
-            animation: noise 0.2s infinite;
-        }
-
-        @keyframes noise {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -5%); }
-            20% { transform: translate(-10%, 5%); }
-            30% { transform: translate(5%, -10%); }
-            40% { transform: translate(-5%, 15%); }
-            50% { transform: translate(-10%, 5%); }
-            60% { transform: translate(15%, 0); }
-            70% { transform: translate(0, 10%); }
-            80% { transform: translate(-15%, 0); }
-            90% { transform: translate(10%, 5%); }
-        }
-
-        /* Film grain overlay */
-        .film-grain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.08;
-            z-index: 999;
-            pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grainFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grainFilter)' /%3E%3C/svg%3E");
-            animation: grain 0.15s steps(5) infinite;
-        }
-
-        @keyframes grain {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-2%, -2%); }
-            20% { transform: translate(2%, -1%); }
-            30% { transform: translate(-1%, 2%); }
-            40% { transform: translate(1%, 1%); }
-            50% { transform: translate(-2%, 1%); }
-            60% { transform: translate(2%, -2%); }
-            70% { transform: translate(-1%, -1%); }
-            80% { transform: translate(1%, 2%); }
-            90% { transform: translate(2%, 1%); }
-        }
-
-        /* Film scratches/dust */
-        .film-scratches {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.15;
-            z-index: 998;
-            pointer-events: none;
-            background: 
-                linear-gradient(90deg, transparent 98%, rgba(255,255,255,0.05) 98%, rgba(255,255,255,0.05) 99%, transparent 99%),
-                linear-gradient(90deg, transparent 23%, rgba(255,255,255,0.03) 23%, rgba(255,255,255,0.03) 23.5%, transparent 23.5%),
-                linear-gradient(90deg, transparent 67%, rgba(255,255,255,0.04) 67%, rgba(255,255,255,0.04) 67.5%, transparent 67.5%);
-            animation: scratches 8s linear infinite;
-        }
-
-        @keyframes scratches {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); }
-        }
-
-        /* Subtle vignette */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.4) 100%);
-            z-index: 997;
-        }
+        /* VHS effects removed - using video background instead */
     </style>
 </head>
 <body>
     <video autoplay muted loop playsinline class="background-video">
         <source src="./assets/videos/PaintSplatter.mp4" type="video/mp4">
     </video>
-
-    <div class="scanlines"></div>
-    <div class="noise"></div>
-    <div class="film-grain"></div>
-    <div class="film-scratches"></div>
     
     <div class="container">
         <h1>ABOUT ITM</h1>
