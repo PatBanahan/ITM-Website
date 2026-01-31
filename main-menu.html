@@ -133,6 +133,54 @@
             80% { transform: translate(-15%, 0); }
             90% { transform: translate(10%, 5%); }
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+                letter-spacing: 6px;
+                margin-bottom: 30px;
+            }
+
+            .menu-btn {
+                padding: 15px 40px;
+                font-size: 20px;
+                letter-spacing: 3px;
+                gap: 10px;
+            }
+
+            .menu-btn img {
+                width: 24px;
+                height: 24px;
+            }
+
+            .container {
+                gap: 25px;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+                letter-spacing: 4px;
+            }
+
+            .menu-btn {
+                padding: 12px 30px;
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+
+            .menu-btn img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .container {
+                gap: 20px;
+            }
+        }
     </style>
 </head>
 <body>

@@ -472,6 +472,46 @@
             letter-spacing: 4px;
             z-index: 100;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 32px;
+                letter-spacing: 4px;
+                padding: 0 20px;
+            }
+
+            .enter-btn {
+                padding: 15px 40px;
+                font-size: 24px;
+                letter-spacing: 4px;
+            }
+
+            .content {
+                padding: 60px 20px;
+            }
+
+            #scene-container {
+                transform: scale(0.6);
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+                letter-spacing: 2px;
+            }
+
+            .enter-btn {
+                padding: 12px 30px;
+                font-size: 20px;
+                letter-spacing: 3px;
+            }
+
+            #scene-container {
+                transform: scale(0.5);
+            }
+        }
     </style>
 </head>
 <body>
