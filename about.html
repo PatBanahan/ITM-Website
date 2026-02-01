@@ -42,41 +42,9 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 40px 40px 80px;
+            padding: 80px 40px;
             position: relative;
             z-index: 2;
-        }
-
-        .back-button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #fff;
-            color: #fff;
-            padding: 12px 24px;
-            font-family: 'Early Quake', monospace;
-            font-size: 24px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            z-index: 100;
-            line-height: 1;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .back-button img {
-            transition: filter 0.3s ease;
-        }
-
-        .back-button:hover {
-            background: #fff;
-            color: #000;
-            cursor: url('./assets/images/paper-plane-cursor-black.png'), pointer;
-            transform: scale(1.05);
-        }
-
-        .back-button:hover img {
-            filter: invert(1);
         }
 
         h1 {
@@ -97,32 +65,32 @@
             margin-bottom: 30px;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px 60px;
-            }
-
-            .back-button {
-                font-size: 18px;
-                padding: 8px 16px;
-            }
-
-            .back-button img {
-                width: 32px !important;
-                height: 32px !important;
-            }
-
-            h1 {
-                font-size: 32px;
-                letter-spacing: 6px;
-                margin-bottom: 30px;
-            }
-
-            .about-text {
-                font-size: 16px;
-            }
+        .back-btn {
+            font-family: 'Early Quake', sans-serif;
+            padding: 20px 60px;
+            font-size: 28px;
+            letter-spacing: 6px;
+            background: transparent;
+            color: #fff;
+            border: 3px solid #fff;
+            cursor: url('./assets/images/paper-plane-cursor-white.png'), pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            margin: 40px auto 0;
+            width: fit-content;
         }
+
+        .back-btn:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
+            cursor: url('./assets/images/paper-plane-cursor-black.png'), pointer;
+        }
+
+        /* VHS effects */
+        /* VHS effects removed - using video background instead */
     </style>
 </head>
 <body>
@@ -131,11 +99,6 @@
     </video>
     
     <div class="container">
-        <a href="main-menu.html" class="back-button">
-            <img src="./assets/images/arrow.png" alt="Back" style="width: 47px; height: 47px; position: relative; top: 0px; left: -2px;">
-            <span>BACK</span>
-        </a>
-
         <h1>ABOUT ITM</h1>
         
         <div class="about-text">
@@ -151,6 +114,23 @@
 
             <p>This is for the kids who were told they'd never be enough. The problem children, the burnouts, the outsiders. The ones who don't fit the mold and don't care to. ITM sits at the intersection where skate culture meets rap — raw energy, creativity without rules, and a refusal to play it safe.</p>
         </div>
+
+        <a href="main-menu.html" class="back-btn">BACK</a>
     </div>
+
+<script>
+    // iOS autoplay fix: trigger video.play() on first user gesture
+    (function() {
+        var video = document.querySelector(".background-video");
+        if (!video) return;
+        function tryPlay() {
+            video.play();
+            document.removeEventListener("touchstart", tryPlay);
+            document.removeEventListener("click", tryPlay);
+        }
+        document.addEventListener("touchstart", tryPlay, { once: true });
+        document.addEventListener("click", tryPlay, { once: true });
+    })();
+</script>
 </body>
 </html>

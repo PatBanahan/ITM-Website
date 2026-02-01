@@ -54,8 +54,9 @@
         }
 
         .back-button {
-
-
+            position: absolute;
+            top: 30px;
+            left: 30px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid #fff;
             color: #fff;
@@ -66,10 +67,9 @@
             transition: all 0.3s ease;
             z-index: 100;
             line-height: 1;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 20px;
         }
 
         .back-button img {
@@ -247,7 +247,7 @@
             }
 
             .back-button {
-    
+                top: 20px;
                 left: 20px;
                 padding: 10px 20px;
                 font-size: 14px;
@@ -289,12 +289,12 @@
         <source src="assets/videos/PaintSplatter.mp4" type="video/mp4">
     </video>
 
+    <a href="main-menu.html" class="back-button">
+        <img src="assets/images/arrow.png" alt="Back" style="width: 47px; height: 47px; position: relative; top: 0px; left: -2px;">
+        <span>BACK</span>
+    </a>
 
     <div class="container">
-        <a href="main-menu.html" class="back-button">
-            <img src="assets/images/arrow.png" alt="Back" style="width: 47px; height: 47px; position: relative; top: 0px; left: -2px;">
-            <span>BACK</span>
-        </a>
         <h1>Music</h1>
 
         <div class="albums-container">
@@ -424,5 +424,20 @@
             </div>
         </div>
     </div>
+
+<script>
+    // iOS autoplay fix: trigger video.play() on first user gesture
+    (function() {
+        var video = document.querySelector(".background-video");
+        if (!video) return;
+        function tryPlay() {
+            video.play();
+            document.removeEventListener("touchstart", tryPlay);
+            document.removeEventListener("click", tryPlay);
+        }
+        document.addEventListener("touchstart", tryPlay, { once: true });
+        document.addEventListener("click", tryPlay, { once: true });
+    })();
+</script>
 </body>
 </html>

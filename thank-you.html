@@ -158,5 +158,20 @@
         <p>Thanks for reaching out. We'll get back to you soon lil bro</p>
         <a href="main-menu.html" class="back-button">Back to Menu</a>
     </div>
+
+<script>
+    // iOS autoplay fix: trigger video.play() on first user gesture
+    (function() {
+        var video = document.querySelector(".background-video");
+        if (!video) return;
+        function tryPlay() {
+            video.play();
+            document.removeEventListener("touchstart", tryPlay);
+            document.removeEventListener("click", tryPlay);
+        }
+        document.addEventListener("touchstart", tryPlay, { once: true });
+        document.addEventListener("click", tryPlay, { once: true });
+    })();
+</script>
 </body>
 </html>

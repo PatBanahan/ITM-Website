@@ -46,8 +46,6 @@
             justify-content: center;
             height: 100vh;
             gap: 40px;
-            position: relative;
-            z-index: 2;
         }
 
         h1 {
@@ -99,10 +97,18 @@
         }
         
         @keyframes wiggle-pulse {
-            0%, 100% { transform: translateY(-4px) rotate(0deg) scale(1); }
-            25% { transform: translateY(-4px) rotate(-5deg) scale(1.05); }
-            50% { transform: translateY(-4px) rotate(0deg) scale(1.08); }
-            75% { transform: translateY(-4px) rotate(5deg) scale(1.05); }
+            0%, 100% {
+                transform: translateY(-4px) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateY(-4px) rotate(-5deg) scale(1.05);
+            }
+            50% {
+                transform: translateY(-4px) rotate(0deg) scale(1.08);
+            }
+            75% {
+                transform: translateY(-4px) rotate(5deg) scale(1.05);
+            }
         }
 
         .menu-btn:hover {
@@ -110,6 +116,22 @@
             color: #000;
             transform: scale(1.05);
             cursor: url('./assets/images/paper-plane-cursor-black.png'), pointer;
+        }
+
+        /* VHS effects */
+        /* VHS effects removed - using video background instead */
+
+        @keyframes noise {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
         }
 
         /* Mobile Responsive */
@@ -192,5 +214,20 @@
             </a>
         </div>
     </div>
+
+<script>
+    // iOS autoplay fix: trigger video.play() on first user gesture
+    (function() {
+        var video = document.querySelector(".background-video");
+        if (!video) return;
+        function tryPlay() {
+            video.play();
+            document.removeEventListener("touchstart", tryPlay);
+            document.removeEventListener("click", tryPlay);
+        }
+        document.addEventListener("touchstart", tryPlay, { once: true });
+        document.addEventListener("click", tryPlay, { once: true });
+    })();
+</script>
 </body>
 </html>
