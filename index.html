@@ -44,7 +44,7 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            width: 177.78vh; /* 16:9 ratio trick to cover full screen */
+            width: 177.78vh;
             height: 100vh;
             transform: translate(-50%, -50%);
             z-index: 0;
@@ -55,11 +55,6 @@
         .content {
             position: relative;
             z-index: 10 !important;
-        }
-
-        .content {
-            position: relative;
-            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -169,7 +164,6 @@
             90% { transform: translate(10%, 5%); }
         }
 
-        /* Glitch animations */
         @keyframes glitch-button {
             0%, 100% { 
                 transform: translate(0);
@@ -391,73 +385,33 @@
         }
 
         @keyframes vhs-glitch {
-            0% {
-                background: transparent;
-            }
+            0% { background: transparent; }
             10% {
-                background: 
-                    linear-gradient(90deg, rgba(255,0,0,0.3) 0%, transparent 10%, rgba(0,255,0,0.3) 20%, transparent 30%, rgba(0,0,255,0.3) 40%, transparent 50%);
+                background: linear-gradient(90deg, rgba(255,0,0,0.3) 0%, transparent 10%, rgba(0,255,0,0.3) 20%, transparent 30%, rgba(0,0,255,0.3) 40%, transparent 50%);
                 transform: translateX(-100px);
             }
             20% {
-                background: 
-                    repeating-linear-gradient(
-                        0deg,
-                        rgba(255, 255, 255, 0.1) 0px,
-                        transparent 2px,
-                        rgba(0, 0, 0, 0.2) 4px,
-                        transparent 6px
-                    );
+                background: repeating-linear-gradient(0deg, rgba(255,255,255,0.1) 0px, transparent 2px, rgba(0,0,0,0.2) 4px, transparent 6px);
                 transform: translateX(100px);
             }
-            30% {
-                background: rgba(255, 255, 255, 0.9);
-                transform: translateX(0);
-            }
-            35% {
-                background: rgba(0, 0, 0, 0.9);
-            }
+            30% { background: rgba(255, 255, 255, 0.9); transform: translateX(0); }
+            35% { background: rgba(0, 0, 0, 0.9); }
             40% {
-                background: 
-                    repeating-linear-gradient(
-                        90deg,
-                        rgba(255, 0, 0, 0.2) 0px,
-                        rgba(0, 255, 0, 0.2) 3px,
-                        rgba(0, 0, 255, 0.2) 6px
-                    );
+                background: repeating-linear-gradient(90deg, rgba(255,0,0,0.2) 0px, rgba(0,255,0,0.2) 3px, rgba(0,0,255,0.2) 6px);
                 transform: translateY(-50px);
             }
-            50% {
-                background: rgba(255, 255, 255, 0.8);
-                transform: translateY(50px);
-            }
+            50% { background: rgba(255, 255, 255, 0.8); transform: translateY(50px); }
             60% {
-                background: 
-                    repeating-linear-gradient(
-                        180deg,
-                        transparent 0px,
-                        rgba(255, 255, 255, 0.1) 1px,
-                        transparent 2px
-                    );
+                background: repeating-linear-gradient(180deg, transparent 0px, rgba(255,255,255,0.1) 1px, transparent 2px);
                 transform: scale(1.05);
             }
-            70% {
-                background: rgba(0, 0, 0, 0.7);
-                transform: scale(0.95);
-            }
+            70% { background: rgba(0, 0, 0, 0.7); transform: scale(0.95); }
             80% {
-                background: 
-                    linear-gradient(0deg, rgba(255,0,0,0.5) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,255,0.5) 100%);
+                background: linear-gradient(0deg, rgba(255,0,0,0.5) 0%, rgba(0,255,0,0.5) 50%, rgba(0,0,255,0.5) 100%);
                 transform: translateX(-50px);
             }
-            90% {
-                background: rgba(255, 255, 255, 0.95);
-                transform: scale(1.1);
-            }
-            100% {
-                background: transparent;
-                transform: scale(1);
-            }
+            90% { background: rgba(255, 255, 255, 0.95); transform: scale(1.1); }
+            100% { background: transparent; transform: scale(1); }
         }
 
         #loading {
@@ -468,6 +422,38 @@
             font-size: 24px;
             letter-spacing: 4px;
             z-index: 100;
+        }
+
+        /* Mobile tap-to-play overlay */
+        #mobile-play-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            background: rgba(0,0,0,0.5);
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+        }
+        #mobile-play-overlay .play-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #mobile-play-overlay .play-triangle {
+            width: 0;
+            height: 0;
+            border-left: 32px solid #000;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            margin-left: 8px;
         }
 
         /* Mobile Responsive */
@@ -513,11 +499,18 @@
 </head>
 <body>
     <iframe id="background-video"
-        src="https://www.youtube.com/embed/YA7C_EHDNu8?autoplay=1&mute=1&loop=1&playlist=YA7C_EHDNu8&controls=0&showinfo=0&modestbranding=1"
+        src="https://www.youtube.com/embed/YA7C_EHDNu8?autoplay=1&mute=1&loop=1&playlist=YA7C_EHDNu8&controls=0&showinfo=0&modestbranding=1&playsinline=1"
         frameborder="0"
         allow="autoplay; encrypted-media"
         allowfullscreen>
     </iframe>
+
+    <!-- Mobile tap-to-play overlay (shown only on touch devices) -->
+    <div id="mobile-play-overlay">
+        <div class="play-circle">
+            <div class="play-triangle"></div>
+        </div>
+    </div>
     
     <div id="cursor"></div>
     <div class="scanlines"></div>
@@ -538,22 +531,39 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
     <script>
+        // --- Mobile tap-to-play for YouTube iframe ---
+        (function() {
+            var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            var overlay = document.getElementById('mobile-play-overlay');
+            if (isMobile) {
+                overlay.style.display = 'flex';
+                overlay.addEventListener('click', function() {
+                    overlay.style.display = 'none';
+                    // Re-set src after user gesture so YouTube autoplay is allowed
+                    var iframe = document.getElementById('background-video');
+                    iframe.src = iframe.src;
+                });
+            }
+        })();
+
+        // --- Cursor ---
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
+        // --- Three.js scene ---
         const container = document.getElementById('scene-container');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // Transparent background
+        renderer.setClearColor(0x000000, 0);
         container.appendChild(renderer.domElement);
 
-        camera.position.set(0, 0, 5); // Eye level, centered
+        camera.position.set(0, 0, 5);
 
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
         scene.add(ambientLight);
@@ -574,13 +584,9 @@
         let logo;
         const loader = new THREE.GLTFLoader();
         
-        console.log('Loading logo from local file...');
-        
-        // Load from same directory
         loader.load(
             './ITM_Logo_3D.glb',
             function(gltf) {
-                console.log('Logo loaded successfully!');
                 logo = gltf.scene;
                 
                 const box = new THREE.Box3().setFromObject(logo);
@@ -589,7 +595,7 @@
                 
                 const size = box.getSize(new THREE.Vector3());
                 const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 3.6 / maxDim; // 90% of 4 = 3.6
+                const scale = 3.6 / maxDim;
                 logo.scale.multiplyScalar(scale);
                 
                 logo.traverse((child) => {
@@ -609,35 +615,35 @@
                 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('content').style.display = 'flex';
-                
-                console.log('Logo loaded and content displayed!');
             },
-            function(xhr) {
-                console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-            },
+            function(xhr) {},
             function(error) {
                 console.error('Error loading logo:', error);
-                document.getElementById('loading').innerText = 'ERROR - See console';
+                document.getElementById('loading').innerText = 'ERROR';
             }
         );
         
-        // Fallback: Show content after 5 seconds even if logo doesn't load
+        // Fallback: show content after 5s even if logo fails
         setTimeout(() => {
             if (document.getElementById('loading').style.display !== 'none') {
-                console.log('Timeout: Showing content anyway');
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('content').style.display = 'flex';
             }
         }, 5000);
-        
-        // YouTube iframe handles autoplay automatically
+
+        // --- Animation loop with deltaTime for consistent speed on mobile ---
+        let lastTime = performance.now();
 
         function animate() {
             requestAnimationFrame(animate);
             
+            const now = performance.now();
+            const delta = (now - lastTime) / 16.67; // normalize to ~60fps
+            lastTime = now;
+
             if (logo) {
                 const speed = logo.userData.glitchSpeed || 0.01;
-                logo.rotation.y += speed;
+                logo.rotation.y += speed * delta;
             }
             
             renderer.render(scene, camera);
@@ -650,6 +656,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
+        // --- ENTER button glitch transition ---
         let isTransitioning = false;
         let logoSpinInterval = null;
 
@@ -659,78 +666,53 @@
             const overlay = document.getElementById('glitch-overlay');
             const content = document.querySelector('.content');
             
-            // Prevent multiple clicks
             if (isTransitioning) return;
             isTransitioning = true;
             
-            // Step 1: Button glitches (0-300ms)
+            // Step 1: Button glitches
             button.classList.add('glitching-button');
             
-            // Step 1.5: Title glitches (0-600ms)
-            if (title) {
-                title.classList.add('glitching-title');
-            }
+            // Step 1.5: Title glitches
+            if (title) title.classList.add('glitching-title');
             
-            // Step 2: Logo spins MUCH faster (300-1200ms) - CONSTANT SPEED
+            // Step 2: Logo spins fast
             setTimeout(() => {
                 if (logo) {
-                    // Clear any existing interval
                     if (logoSpinInterval) clearInterval(logoSpinInterval);
-                    
-                    // Spin at constant high speed until transition completes
                     logoSpinInterval = setInterval(() => {
-                        logo.rotation.y += 0.15; // Super fast, constant speed
-                    }, 16); // ~60fps
+                        logo.rotation.y += 0.15;
+                    }, 16);
                 }
             }, 300);
             
-            // Step 3: Full screen glitch (600-1200ms)
+            // Step 3: Full screen glitch
             setTimeout(() => {
                 content.classList.add('glitching-screen');
                 overlay.classList.add('active');
             }, 600);
             
-            // Step 4: Hard cut to main menu (1200ms)
+            // Step 4: Navigate
             setTimeout(() => {
                 if (logoSpinInterval) clearInterval(logoSpinInterval);
                 window.location.href = 'main-menu.html';
             }, 1200);
         }
 
-        // Reset state when page loads (fixes back button)
-        window.addEventListener('load', () => {
+        // Reset on load / back navigation
+        function resetState() {
             isTransitioning = false;
             if (logoSpinInterval) clearInterval(logoSpinInterval);
-            
-            // Remove any stuck classes
             const button = document.querySelector('.enter-btn');
             const title = document.querySelector('h1');
             const overlay = document.getElementById('glitch-overlay');
             const content = document.querySelector('.content');
-            
             if (button) button.classList.remove('glitching-button');
             if (title) title.classList.remove('glitching-title');
             if (overlay) overlay.classList.remove('active');
             if (content) content.classList.remove('glitching-screen');
-        });
-        
-        // Also reset when navigating back
-        window.addEventListener('pageshow', (event) => {
-            if (event.persisted) {
-                isTransitioning = false;
-                if (logoSpinInterval) clearInterval(logoSpinInterval);
-                
-                const button = document.querySelector('.enter-btn');
-                const title = document.querySelector('h1');
-                const overlay = document.getElementById('glitch-overlay');
-                const content = document.querySelector('.content');
-                
-                if (button) button.classList.remove('glitching-button');
-                if (title) title.classList.remove('glitching-title');
-                if (overlay) overlay.classList.remove('active');
-                if (content) content.classList.remove('glitching-screen');
-            }
-        });
+        }
+        window.addEventListener('load', resetState);
+        window.addEventListener('pageshow', (e) => { if (e.persisted) resetState(); });
     </script>
 </body>
 </html>
