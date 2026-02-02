@@ -40,7 +40,7 @@
             z-index: 1;
         }
 
-        .background-video {
+                .background-video {
             position: fixed;
             top: 0;
             left: 0;
@@ -634,7 +634,7 @@
             requestAnimationFrame(animate);
             
             const now = performance.now();
-            const delta = (now - lastTime) / 16.67; // normalize to ~60fps
+            const delta = (now - lastTime) / 16.67;
             lastTime = now;
             
             if (logo) {

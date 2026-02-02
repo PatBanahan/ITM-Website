@@ -91,6 +91,47 @@
 
         /* VHS effects */
         /* VHS effects removed - using video background instead */
+
+        /* Mobile back button fix */
+        .back-button-mobile {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .back-button {
+                display: none !important;
+            }
+            
+            .back-button-mobile {
+                display: inline-flex !important;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid #fff;
+                color: #fff;
+                padding: 12px 24px;
+                font-family: 'Early Quake', monospace;
+                font-size: 18px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .back-button-mobile:hover {
+                background: #fff;
+                color: #000;
+                transform: scale(1.05);
+            }
+            
+            .back-button-mobile img {
+                filter: brightness(0) invert(1);
+                transition: filter 0.3s ease;
+            }
+            
+            .back-button-mobile:hover img {
+                filter: brightness(0) invert(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -124,7 +165,9 @@
         var video = document.querySelector(".background-video");
         if (!video) return;
         function tryPlay() {
-            video.play();
+            video.play().catch(function(e) {
+                console.log("Autoplay prevented:", e);
+            });
             document.removeEventListener("touchstart", tryPlay);
             document.removeEventListener("click", tryPlay);
         }

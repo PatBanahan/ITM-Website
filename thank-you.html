@@ -160,14 +160,11 @@
     </div>
 
 <script>
-    // iOS autoplay fix
     (function() {
         var video = document.querySelector(".background-video");
         if (!video) return;
         function tryPlay() {
-            video.play();
-            document.removeEventListener("touchstart", tryPlay);
-            document.removeEventListener("click", tryPlay);
+            video.play().catch(function(e) { console.log("Autoplay prevented:", e); });
         }
         document.addEventListener("touchstart", tryPlay, { once: true });
         document.addEventListener("click", tryPlay, { once: true });

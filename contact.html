@@ -90,6 +90,9 @@
         }
 
         .back-button {
+            position: absolute;
+            top: 30px;
+            left: 30px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid #fff;
             color: #fff;
@@ -100,7 +103,7 @@
             transition: all 0.3s ease;
             z-index: 100;
             line-height: 1;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 12px;
         }
@@ -281,6 +284,8 @@
             }
 
             .back-button {
+                top: 20px;
+                left: 20px;
                 padding: 10px 20px;
                 font-size: 18px;
             }
@@ -315,6 +320,47 @@
                 padding: 12px 30px;
             }
         }
+
+        /* Mobile back button fix */
+        .back-button-mobile {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .back-button {
+                display: none !important;
+            }
+            
+            .back-button-mobile {
+                display: inline-flex !important;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid #fff;
+                color: #fff;
+                padding: 12px 24px;
+                font-family: 'Early Quake', monospace;
+                font-size: 18px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .back-button-mobile:hover {
+                background: #fff;
+                color: #000;
+                transform: scale(1.05);
+            }
+            
+            .back-button-mobile img {
+                filter: brightness(0) invert(1);
+                transition: filter 0.3s ease;
+            }
+            
+            .back-button-mobile:hover img {
+                filter: brightness(0) invert(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -322,13 +368,12 @@
         <source src="assets/videos/PaintSplatter.mp4" type="video/mp4">
     </video>
 
-    
-
-    <div class="container">
-        <a href="main-menu.html" class="back-button">
+    <a href="main-menu.html" class="back-button">
         <img src="assets/images/arrow.png" alt="Back" style="width: 47px; height: 47px; position: relative; top: 0px; left: -2px;">
         <span>BACK</span>
     </a>
+
+    <div class="container">
         <h1>Contact</h1>
 
         <!-- Contact Form -->
@@ -438,7 +483,9 @@
         var video = document.querySelector(".background-video");
         if (!video) return;
         function tryPlay() {
-            video.play();
+            video.play().catch(function(e) {
+                console.log("Autoplay prevented:", e);
+            });
             document.removeEventListener("touchstart", tryPlay);
             document.removeEventListener("click", tryPlay);
         }
