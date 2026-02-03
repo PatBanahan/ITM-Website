@@ -40,7 +40,7 @@
             z-index: 1;
         }
 
-                .background-video {
+        .background-video {
             position: fixed;
             top: 0;
             left: 0;
@@ -511,7 +511,7 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline class="background-video">
+    <video autoplay muted loop playsinline webkit-playsinline class="background-video">
         <source src="./assets/videos/5Sec-Montage.mp4" type="video/mp4">
     </video>
     
@@ -734,5 +734,54 @@
             }
         });
     </script>
+
+<script>
+// AGGRESSIVE iOS autoplay fix
+(function() {
+    var video = document.querySelector(".background-video");
+    if (!video) {
+        console.log("❌ No video element found");
+        return;
+    }
+    
+    console.log("✅ Video element found");
+    var playAttempted = false;
+    
+    function attemptPlay() {
+        if (playAttempted) return;
+        playAttempted = true;
+        
+        console.log("🎬 Attempting video play...");
+        
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.autoplay = true;
+        video.loop = true;
+        
+        var playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(function() {
+                console.log("✅ Video autoplay successful!");
+            }).catch(function(error) {
+                console.log("⚠️ Autoplay blocked, waiting for user interaction");
+            });
+        }
+    }
+    
+    attemptPlay();
+    setTimeout(attemptPlay, 100);
+    setTimeout(attemptPlay, 500);
+    
+    ['touchstart', 'touchend', 'click', 'scroll'].forEach(function(event) {
+        document.addEventListener(event, function() {
+            video.play().catch(function() {});
+        }, { once: true, passive: true });
+    });
+})();
+</script>
+
 </body>
 </html>

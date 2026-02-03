@@ -235,51 +235,10 @@
                 font-size: 14px;
             }
         }
-
-        /* Mobile back button fix */
-        .back-button-mobile {
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            .back-button {
-                display: none !important;
-            }
-            
-            .back-button-mobile {
-                display: inline-flex !important;
-                background: rgba(255, 255, 255, 0.1);
-                border: 2px solid #fff;
-                color: #fff;
-                padding: 12px 24px;
-                font-family: 'Early Quake', monospace;
-                font-size: 18px;
-                text-decoration: none;
-                transition: all 0.3s ease;
-                align-items: center;
-                gap: 12px;
-                margin-bottom: 20px;
-            }
-            
-            .back-button-mobile:hover {
-                background: #fff;
-                color: #000;
-                transform: scale(1.05);
-            }
-            
-            .back-button-mobile img {
-                filter: brightness(0) invert(1);
-                transition: filter 0.3s ease;
-            }
-            
-            .back-button-mobile:hover img {
-                filter: brightness(0) invert(0);
-            }
-        }
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline class="background-video">
+    <video webkit-playsinline autoplay muted loop playsinline class="background-video">
         <source src="assets/videos/PaintSplatter.mp4" type="video/mp4">
     </video>
 
@@ -463,20 +422,67 @@
     </div>
 
 <script>
-    // iOS autoplay fix
-    (function() {
-        var video = document.querySelector(".background-video");
-        if (!video) return;
-        function tryPlay() {
-            video.play().catch(function(e) {
-                console.log("Autoplay prevented:", e);
+// AGGRESSIVE iOS autoplay fix - tries multiple approaches
+(function() {
+    var video = document.querySelector(".background-video");
+    if (!video) return;
+    
+    var playAttempted = false;
+    
+    function attemptPlay() {
+        if (playAttempted) return;
+        playAttempted = true;
+        
+        console.log("Attempting video play...");
+        
+        // Set all attributes directly via JS
+        video.muted = true;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.autoplay = true;
+        video.loop = true;
+        
+        // Try to play
+        var playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(function() {
+                console.log("✅ Video autoplay successful!");
+            }).catch(function(error) {
+                console.log("❌ Autoplay blocked:", error);
+                console.log("Will play on user interaction...");
             });
-            document.removeEventListener("touchstart", tryPlay);
-            document.removeEventListener("click", tryPlay);
         }
-        document.addEventListener("touchstart", tryPlay, { once: true });
-        document.addEventListener("click", tryPlay, { once: true });
-    })();
+    }
+    
+    // Try immediately
+    attemptPlay();
+    
+    // Try after a short delay
+    setTimeout(attemptPlay, 100);
+    setTimeout(attemptPlay, 500);
+    
+    // Try on ANY user interaction
+    var events = ['touchstart', 'touchend', 'click', 'scroll'];
+    events.forEach(function(eventName) {
+        document.addEventListener(eventName, function() {
+            if (!playAttempted) {
+                attemptPlay();
+            }
+            // Also just in case, try to play the video directly
+            video.play().catch(function() {});
+        }, { once: true, passive: true });
+    });
+    
+    // Try when page becomes visible
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            video.play().catch(function() {});
+        }
+    });
+})();
 </script>
+
 </body>
 </html>
