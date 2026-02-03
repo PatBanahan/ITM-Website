@@ -323,7 +323,7 @@
     </style>
 </head>
 <body>
-    <video webkit-playsinline autoplay muted loop playsinline class="background-video">
+    <video autoplay muted loop playsinline class="background-video">
         <source src="assets/videos/PaintSplatter.mp4" type="video/mp4">
     </video>
 
@@ -336,8 +336,9 @@
         <h1>Contact</h1>
 
         <!-- Contact Form -->
-        <form name="contact" method="POST" data-netlify="true" action="/thank-you.html" class="contact-form">
-            <input type="hidden" name="form-name" value="contact">
+        <form action="https://formspree.io/f/maqbkjvr" method="POST" class="contact-form">
+            <input type="hidden" name="_next" value="https://itm-website-two.vercel.app/thank-you.html">
+            
             
             <div class="form-group">
                 <label for="email">Your Email</label>
@@ -435,69 +436,5 @@
             </div>
         </div>
     </div>
-
-<script>
-// AGGRESSIVE iOS autoplay fix - tries multiple approaches
-(function() {
-    var video = document.querySelector(".background-video");
-    if (!video) return;
-    
-    var playAttempted = false;
-    
-    function attemptPlay() {
-        if (playAttempted) return;
-        playAttempted = true;
-        
-        console.log("Attempting video play...");
-        
-        // Set all attributes directly via JS
-        video.muted = true;
-        video.playsInline = true;
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-        video.autoplay = true;
-        video.loop = true;
-        
-        // Try to play
-        var playPromise = video.play();
-        
-        if (playPromise !== undefined) {
-            playPromise.then(function() {
-                console.log("✅ Video autoplay successful!");
-            }).catch(function(error) {
-                console.log("❌ Autoplay blocked:", error);
-                console.log("Will play on user interaction...");
-            });
-        }
-    }
-    
-    // Try immediately
-    attemptPlay();
-    
-    // Try after a short delay
-    setTimeout(attemptPlay, 100);
-    setTimeout(attemptPlay, 500);
-    
-    // Try on ANY user interaction
-    var events = ['touchstart', 'touchend', 'click', 'scroll'];
-    events.forEach(function(eventName) {
-        document.addEventListener(eventName, function() {
-            if (!playAttempted) {
-                attemptPlay();
-            }
-            // Also just in case, try to play the video directly
-            video.play().catch(function() {});
-        }, { once: true, passive: true });
-    });
-    
-    // Try when page becomes visible
-    document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) {
-            video.play().catch(function() {});
-        }
-    });
-})();
-</script>
-
 </body>
 </html>

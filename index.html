@@ -40,15 +40,16 @@
             z-index: 1;
         }
 
-        .background-video {
+        #background-video {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            top: 50%;
+            left: 50%;
+            width: 177.78vh; /* 16:9 ratio trick to cover full screen */
+            height: 100vh;
+            transform: translate(-50%, -50%);
             z-index: 0;
             pointer-events: none;
+            border: none;
         }
         
         .content {
@@ -511,9 +512,12 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline webkit-playsinline class="background-video">
-        <source src="./assets/videos/5Sec-Montage.mp4" type="video/mp4">
-    </video>
+    <iframe id="background-video"
+        src="https://www.youtube.com/embed/YA7C_EHDNu8?autoplay=1&mute=1&loop=1&playlist=YA7C_EHDNu8&controls=0&showinfo=0&modestbranding=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+    </iframe>
     
     <div id="cursor"></div>
     <div class="scanlines"></div>
@@ -628,18 +632,12 @@
         
         // YouTube iframe handles autoplay automatically
 
-        let lastTime = performance.now();
-        
         function animate() {
             requestAnimationFrame(animate);
             
-            const now = performance.now();
-            const delta = (now - lastTime) / 16.67;
-            lastTime = now;
-            
             if (logo) {
                 const speed = logo.userData.glitchSpeed || 0.01;
-                logo.rotation.y += speed * delta;
+                logo.rotation.y += speed;
             }
             
             renderer.render(scene, camera);
@@ -734,54 +732,5 @@
             }
         });
     </script>
-
-<script>
-// AGGRESSIVE iOS autoplay fix
-(function() {
-    var video = document.querySelector(".background-video");
-    if (!video) {
-        console.log("❌ No video element found");
-        return;
-    }
-    
-    console.log("✅ Video element found");
-    var playAttempted = false;
-    
-    function attemptPlay() {
-        if (playAttempted) return;
-        playAttempted = true;
-        
-        console.log("🎬 Attempting video play...");
-        
-        video.muted = true;
-        video.playsInline = true;
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-        video.autoplay = true;
-        video.loop = true;
-        
-        var playPromise = video.play();
-        
-        if (playPromise !== undefined) {
-            playPromise.then(function() {
-                console.log("✅ Video autoplay successful!");
-            }).catch(function(error) {
-                console.log("⚠️ Autoplay blocked, waiting for user interaction");
-            });
-        }
-    }
-    
-    attemptPlay();
-    setTimeout(attemptPlay, 100);
-    setTimeout(attemptPlay, 500);
-    
-    ['touchstart', 'touchend', 'click', 'scroll'].forEach(function(event) {
-        document.addEventListener(event, function() {
-            video.play().catch(function() {});
-        }, { once: true, passive: true });
-    });
-})();
-</script>
-
 </body>
 </html>
