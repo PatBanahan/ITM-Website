@@ -70,7 +70,7 @@
 
         h1 {
             font-family: 'Early Quake', sans-serif;
-            font-size: 72px;
+            font-size: 130px;
             letter-spacing: 12px;
             text-transform: uppercase;
             font-weight: normal;
@@ -476,13 +476,27 @@
             }
         }
 
+
+        /* Desktop/Mobile video switching */
+        .background-video-mobile {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .background-video-desktop {
+                display: none;
+            }
+            .background-video-mobile {
+                display: block;
+            }
+        }
         /* Mobile video scaling */
         @media (max-width: 768px) {
-            .background-video {
+            .background-video-mobile {
                 width: 100vw !important;
                 height: 100vh !important;
                 object-fit: cover !important;
-                object-position: left center !important;
+                object-position: center center !important;
             }
         }
 
@@ -519,8 +533,11 @@
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline webkit-playsinline class="background-video" style="pointer-events: none;">
+    <video autoplay muted loop playsinline webkit-playsinline class="background-video background-video-desktop" style="pointer-events: none;">
         <source src="./assets/videos/FullMontage.mp4" type="video/mp4">
+    </video>
+    <video autoplay muted loop playsinline webkit-playsinline class="background-video background-video-mobile" style="pointer-events: none;">
+        <source src="./assets/videos/FullMontage-Mobile.mp4" type="video/mp4">
     </video>
     
     <div id="cursor"></div>
