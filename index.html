@@ -479,16 +479,21 @@
         /* Mobile video scaling */
         @media (max-width: 768px) {
             .background-video {
-                width: 100% !important;
-                height: 100% !important;
-                object-fit: contain !important;
-                object-position: center center;
+                width: 100vw !important;
+                height: 100vh !important;
+                object-fit: cover !important;
+                object-position: left center !important;
             }
         }
 
-        /* Hide video controls */
+        /* Aggressively hide ALL video controls */
+        video {
+            pointer-events: none !important;
+        }
         video::-webkit-media-controls {
             display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
         }
         video::-webkit-media-controls-enclosure {
             display: none !important;
@@ -502,10 +507,19 @@
         video::-webkit-media-controls-start-playback-button {
             display: none !important;
         }
+        video::-webkit-media-controls-timeline {
+            display: none !important;
+        }
+        video::-webkit-media-controls-current-time-display {
+            display: none !important;
+        }
+        video::-webkit-media-controls-time-remaining-display {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-    <video autoplay muted loop playsinline webkit-playsinline controls="false" class="background-video">
+    <video autoplay muted loop playsinline webkit-playsinline class="background-video" style="pointer-events: none;">
         <source src="./assets/videos/FullMontage.mp4" type="video/mp4">
     </video>
     
